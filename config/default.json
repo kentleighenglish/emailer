@@ -2,5 +2,7 @@
 	"smtp": {
 		"username": null,
 		"password": null
-	}
+	},
+	"emailList": null,
+	"ccList": null
 }

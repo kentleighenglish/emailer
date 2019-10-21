@@ -6,30 +6,6 @@ const config = require('config');
 app.use(express.static("public"));
 app.use(express.json());
 
-const emailList = [
-  'Joneselizab@googlemail.com',
-  'Paulwilliamsukip@aol.com',
-  'wauchope@hotmail.co.uk',
-  'treasurer@ukip.org',
-  'chairman@ukip.org',
-  'gareth.bennett@assembly.wales',
-  'rhill.ukip@gmail.com',
-  'blackwood60@yahoo.com',
-  'neil.hamilton@assembly.wales',
-  'stephen.lee@ukip.org',
-  'ben.walker@ukip.org',
-  //'marriettaking@hotmail.com',
-  'alanbown@btinternet.com',
-  'paulwilliams@ukip.org',
-  'paulawalters.ukipwirral@gmail.com',
-  'debbielemay@ukip.org'
-];
-
-const ccEmailList = [
-  'ukip@braine.com',
-  'general@kentleigh.com'
-];
-
 app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
@@ -56,8 +32,8 @@ app.post('/submit', async (request, response) => {
     try {
       const info = await transporter.sendMail({
           from,
-          to: emailList.join(','),
-          cc: [ from ],
+          to: config.emailList,
+          cc: config.ccList.split(','),
           subject: `Call the VONC - ${data.name}`,
           text: body,
           html: body
@@ -82,7 +58,11 @@ app.post('/submit', async (request, response) => {
   }
 });
 
-// listen for requests :)
-const listener = app.listen(config.port, function() {
-  console.log("Your app is listening on port " + listener.address().port);
-});
+if (config.emailList && config.ccList) {
+    // listen for requests :)
+    const listener = app.listen(config.port, function() {
+        console.log("Your app is listening on port " + listener.address().port);
+    });
+} else {
+    throw 'You need to set EMAIL_LIST and CC_LIST environment variables';
+}
