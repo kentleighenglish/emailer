@@ -14,7 +14,7 @@ app.get("/", function(request, response) {
                 throw err;
             }
             
-            const output = data.replace('%EMAIL_LIST%', config.emailList);
+            const output = data.replace('%EMAIL_LIST%', config.emailList.replace(/,/g, ', '));
             
             response.send(output);
         });
