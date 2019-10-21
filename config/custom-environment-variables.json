@@ -1,0 +1,7 @@
+{
+	"port": "PORT",
+	"smtp": {
+		"username": "SMTP_USERNAME",
+		"password": "SMTP_PASSWORD"
+	}
+}
