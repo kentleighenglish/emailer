@@ -26,7 +26,8 @@ const emailList = [
 ];
 
 const ccEmailList = [
-  'ukip@braine.com'
+  'ukip@braine.com',
+  'general@kentleigh.com'
 ];
 
 app.get("/", function(request, response) {
@@ -55,7 +56,7 @@ app.post('/submit', async (request, response) => {
     try {
       const info = await transporter.sendMail({
           from,
-          to: 'therebel28@googlemail.com',
+          to: emailList.join(','),
           cc: [ from ],
           subject: `Call the VONC - ${data.name}`,
           text: body,
