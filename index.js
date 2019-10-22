@@ -1,27 +1,43 @@
 const express = require("express");
 const nodemailer = require('nodemailer');
-const app = express();
 const config = require('config');
 const fs = require('fs');
+const path = require('path');
+const store = require('data-store')({ path: path.resolve(__dirname, './store/store.json') });
+
+const app = express();
+
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 app.use(express.static("public"));
 app.use(express.json());
 
+store.get('emailCount');
+let count = store.has('emailCount') ? store.data.emailCount : 0;
+store.set('emailCount', count);
+
 app.get("/", function(request, response) {
-    try {
-        fs.readFile(__dirname + "/views/index.html", 'utf8', (err, data) => {
-            if (err) {
-                throw err;
-            }
-            
-            const output = data.replace('%EMAIL_LIST%', config.emailList.replace(/,/g, ', '));
-            
-            response.send(output);
-        });
-    } catch(e) {
-        console.error(e);
-        repsonse.send('An unexpected error occurred');
-    }
+    const title = `Email The NEC`;
+    const subtitle = `(Emails Sent: <b id="emailCount">${count}</b>)`;
+    
+	try {
+		fs.readFile(__dirname + "/views/index.html", 'utf8', (err, data) => {
+			if (err) {
+				throw err;
+			}
+
+			const output = data
+				.replace('%EMAIL_LIST%', config.emailList.replace(/,/g, ', '))
+				.replace(/%TITLE%/g, title)
+				.replace(/%SUBTITLE%/g, subtitle);
+
+			response.send(output);
+		});
+	} catch (e) {
+		console.error(e);
+		repsonse.send('An unexpected error occurred');
+	}
 });
 
 app.post('/submit', async (request, response) => {
@@ -55,6 +71,9 @@ app.post('/submit', async (request, response) => {
 
 			console.log(info);
 
+            count++;
+            io.emit('countUpdate', { count });
+            store.set('emailCount', count);
 			response.json({
 				success: true
 			});
@@ -74,7 +93,7 @@ app.post('/submit', async (request, response) => {
 
 if (config.emailList && config.ccList) {
 	// listen for requests :)
-	const listener = app.listen(config.port, function() {
+	const listener = server.listen(config.port, function() {
 		console.log("Your app is listening on port " + listener.address().port);
 	});
 } else {

@@ -54,3 +54,8 @@ form.onsubmit = function(event) {
   
   sendForm();
 };
+
+var socket = io();
+socket.on('countUpdate', function(data) {
+    document.getElementById('emailCount').innerHTML = data.count;
+});
