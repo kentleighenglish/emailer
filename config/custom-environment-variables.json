@@ -2,7 +2,10 @@
 	"port": "PORT",
 	"smtp": {
 		"username": "SMTP_USERNAME",
-		"password": "SMTP_PASSWORD"
+		"password": "SMTP_PASSWORD",
+		"host": "SMTP_HOST",
+		"port": "SMTP_PORT",
+		"secure": "SMTP_SECURE"
 	},
 	"emailList": "EMAIL_LIST",
 	"ccList": "CC_LIST"

@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "main": "server.js",
   "scripts": {
-    "start": "source .env && node index.js",
+    "start": "./start.sh",
     "build": "webpack --production"
   },
   "dependencies": {
     "config": "^3.2.3",
     "express": "^4.16.4",
-    "nodemailer": "^6.3.1"
+    "nodemailer": "^6.3.1",
+    "socket.io": "^2.3.0"
   },
   "engines": {
     "node": "8.x"
@@ -20,6 +21,7 @@
     "express"
   ],
   "devDependencies": {
+    "nodemon": "^1.19.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9"
   }

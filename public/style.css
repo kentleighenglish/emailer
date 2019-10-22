@@ -6,7 +6,7 @@ body {
 }
 
 input {
-  width: 100%;
+  margin: 0 10px;
 }
 
 h1, h2, h3 {
@@ -47,4 +47,13 @@ form {
 
 em {
   color: #713978;
+}
+
+.inlineForm input {
+	display: inline;
+	padding: 4px;
+	font-size: 14px;
+	width: 0;
+	margin: 0 4px;
+	min-width: 60px;
 }

@@ -1,57 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Email the NEC</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex,nofollow">
 
-    <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
-    <link rel="stylesheet" href="/style.css">
-    <script src="/client.js" defer></script>
-  </head>
-  <body>
-    <header>
-      <h1>Email The NEC</h1>
-    </header>
-    <main>
-      <p>
-        Richard Braine has challenged the NEC to pass a motion for a vote of no confidence in him.<br>
-        In such a scenario a vote shall be given to the members, should Richard prevail, all NEC seats shall be up for election immediately.<br>
-      </p>
-      <iframe width="100%" height="342" src="https://www.youtube.com/embed/ZZzHiG_bOBU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      <hr>
-      <em>Fill out the form below to tell the NEC to call the vote of no confidence</em>
-      <div id="successMessage" style="display:none">
-        <h2>Thank you.</h2>
-      <h3>Your email has been sent</h3>
-      </div>
-      <form id="form">
-        <label>Email Address: </label>
-        <input name="email" type="email" placeholder="Your Email"  required />
-        <label>Message: </label>
-        <textarea name="body" rows="18" required>
-Dear UKIP Party Chairman and NEC, 
+<head>
+	<title>%%TITLE%%</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex,nofollow">
 
-During the time since Richard Braine was voted in as Leader of UKIP, your words and actions have made it emphatically clear that you do not respect his appointment and that you wish to block him from enjoying his rights and from executing his obligations as Party Leader.
+	<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+	<link rel="stylesheet" href="/style.css">
+</head>
 
-The impasse between yourselves and the elected Party Leader has led to the Party that many of us have worked so hard for over many, many years, becoming a public laughing stock. 
-
-It is abundantly clear that the only way forward is for you to now declare a Vote of No Confidence in Richard Braine and to thus allow the Membership to decide how the current, dreadful and humiliating, situation should be resolved.
-I therefore call upon you to declare such a Vote of No Confidence at the earliest possible opportunity. 
-
-Yours sincerely,</textarea>
-        <label>Full Name: </label>
-        <input name="name" type="text" placeholder="Your Name" required />
-        <hr />
-        <button type="submit" id="submitForm">Send</button>
-      </form>
-      <small>
-The above form will send your email to:<br>
-%EMAIL_LIST%<br>
-        <b>It will also CC ukip@braine.com, and your own email (so you have a copy)</b>
-      </small>
-    </main>
-  </body>
+<body ng-app="app" ng-controller="AppController as app" ng-cloak>
+	<header>
+		<h1>{{app.state.title}}</h1>
+		<div>Emails Sent: <span class="count">{{app.state.emailCount}}</span></div>
+	</header>
+	<main>
+		<p>{{app.state.content}}</p>
+		<hr />
+		<form>
+			<div ng-switch="app.form.type">
+				<div ng-switch-when="inline" class="inlineForm">
+					<div update="app.updateForm(form)" inline-form="app.form" form="app.formData"></div>
+				</div>
+				<div ng-switch-default>
+					<input ng-repeat="field in app.form.fields" name="{{field.name}}" ng-model="app.formData[field.name]" type="{{field.type}}" placeholder="{{field.name}}" />
+				</div>
+			</div>
+			<hr>
+			<button type="submit">Send</button>
+		</form>
+	</main>
+</body>
+<script>
+	window.__INITIAL_STATE__ = %%STATE%%;
+</script>
+<script src="/angular.js"></script>
+<script src="/socketio.js"></script>
+<script src="/client.js" defer></script>
 </html>
