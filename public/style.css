@@ -14,10 +14,6 @@ input {
   width: 100%;
 }
 
-h1, h2, h3 {
-  color: #713978;
-}
-
 textarea, select, input[type] {
   font-size: 18px;
   padding: 8px 12px;
@@ -26,24 +22,24 @@ textarea, select, input[type] {
 }
 
 textarea:focus, select:focus, input[type]:focus {
-  border-color: #713978;
+  border-color: #616161;
 }
 
 button {
   font-size: 20px;
   width: 100%;
   padding: 12px;
-  background-color: #713978;
+  background-color: #616161;
   border: none;
 }
 
 button:not(:disabled):hover {
-  background-color: #A969B2;
+  background-color: #818181;
 }
 
 hr {
   border-style: solid;
-  border-color: #713978;
+  border-color: #AAAAAA;
 }
 
 form {
@@ -51,7 +47,7 @@ form {
 }
 
 em {
-  color: #713978;
+  color: #AAAAAA;
 }
 
 .inlineForm input {
@@ -63,12 +59,14 @@ em {
 	min-width: 60px;
 }
 
-inline-field span {
-	display: inline-block;
+inline-field .text {
+	display: inline-flex;
 	min-width: 40px;
-	padding: 0 4px;
-	height: 22px;
-	font-size: 14px;
-	vertical-align: middle;
+	padding: 0 6px;
+	height: 24px;
+	font-size: 16px;
+	align-items: center;
 	background: #f1f1f1;
+	margin-top: -2px;
+	vertical-align: middle;
 }

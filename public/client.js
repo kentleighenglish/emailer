@@ -35,6 +35,13 @@ app.controller('AppController', ['$scope', 'apiService', function($scope, apiSer
 
 	this.formData = {};
 
+	this.editing = false;
+
+	$scope.$on('editing', function(data) {
+		this.editing = data.value;
+		console.log('edit change');
+	}.bind(this));
+
 	this.parse = function(content) {
 		return content;
 		return $interpolate(content)(this.formData);
@@ -60,20 +67,27 @@ app.directive('inlineField', function() {
 		bindToController: true,
 		controllerAs: 'vm',
 		template: [
-			'<span ng-show="!vm.editing" ng-click="vm.setEditing(true)">{{vm.ngModel}}</span>',
-			'<input ng-show="vm.editing" ng-blur="vm.setEditing(false)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{(vm.value.length || 0) + 2 * .8}}" required />',
+			'<span class="text" ng-click="vm.setEditing(true, $event)">{{vm.ngModel}}</span>',
+			'<input ng-blur="vm.setEditing(false)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{(vm.ngModel.length || 0) + 2 * .8}}" required />',
 		].join(''),
-		controller: function ctrl() {
+		controller: ['$rootScope', function($rootScope) {
 			this.value = '';
 
 			this.update = function() {
 				this.ngModelCtrl.$setViewValue(this.ngModel);
 			}
-			this.setEditing = function(val) {
+			this.setEditing = function(val, $event) {
+				$rootScope.$broadcast('editing', { name: this.name, value: val });
 				this.editing = !!val;
+				if (val === true) {
+					const input = $event.target.nextSibling;
+					setTimeout(function() {
+						input.focus();
+					}.bind(this), 50);
+				}
 			}
 
-		}
+		}]
 	}
 });
 
