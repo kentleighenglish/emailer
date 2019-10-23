@@ -87,7 +87,7 @@ app.directive('inlineField', function() {
 			this.editing = false;
 
 			$rootScope.$on('editing', function($event, data) {
-				if (data.name === this.name) {
+				if (data.name === this.name && data.value === true) {
 					this.active = true;
 				} else {
 					this.active = false;
