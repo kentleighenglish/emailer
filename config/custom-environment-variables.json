@@ -7,6 +7,10 @@
 		"port": "SMTP_PORT",
 		"secure": "SMTP_SECURE"
 	},
-	"emailList": "EMAIL_LIST",
-	"ccList": "CC_LIST"
+  "directus": {
+    "host": "DIRECTUS_HOST",
+    "username": "DIRECTUS_USERNAME",
+    "password": "DIRECTUS_PASSWORD"
+  },
+  "formId": "FORM_ID"
 }

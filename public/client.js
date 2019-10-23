@@ -45,6 +45,38 @@ app.controller('AppController', ['$scope', 'apiService', function($scope, apiSer
 	}
 }]);
 
+app.directive('inlineField', function() {
+	return {
+		restrict: 'E',
+		require: {
+			ngModelCtrl: 'ngModel'
+		},
+		scope: {
+			ngModel: '<',
+			name: '@',
+			placeholder: '@',
+			type: '@',
+		},
+		bindToController: true,
+		controllerAs: 'vm',
+		template: [
+			'<span ng-show="!vm.editing" ng-click="vm.setEditing(true)">{{vm.ngModel}}</span>',
+			'<input ng-show="vm.editing" ng-blur="vm.setEditing(false)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{(vm.value.length || 0) + 2 * .8}}" required />',
+		].join(''),
+		controller: function ctrl() {
+			this.value = '';
+
+			this.update = function() {
+				this.ngModelCtrl.$setViewValue(this.ngModel);
+			}
+			this.setEditing = function(val) {
+				this.editing = !!val;
+			}
+
+		}
+	}
+});
+
 app.directive('inlineForm', function() {
 	return {
 		restrict: 'A',
@@ -57,24 +89,26 @@ app.directive('inlineForm', function() {
 		controller: [ '$scope', '$compile', '$interpolate', function($scope, $compile, $interpolate) {
 			this.$compile = $compile;
 			this.$interpolate = $interpolate;
+
+			this.editMode = false;
 		}],
 		link: function($scope, $element, attrs, ctrl) {
 			const input = $scope.inlineForm;
 
 			ctrl.onUpdate = function() {
+				console.log(ctrl.form);
 				$scope.update({ form: ctrl.form })
 			}
 
-			output = input.body.replace(/\n/g, '<br>');
-
 			const fields = input.fields.reduce(function(obj, input) {
-				obj[input.name] = '<input ng-change="vm.onUpdate()" ng-model="vm.form[\''+input.name+'\']" name="'+input.name+'" type="'+input.type+'" required="'+!!input.required+'" />';
+				obj[input.name] = '<inline-field ng-model="vm.form[\''+input.name+'\']" ng-change="vm.onUpdate()" name="'+input.name+'" type="'+input.type+'" placeholder="'+input.placeholder+'" required />';
 
 				return obj;
 			}, {});
 
-			output = ctrl.$interpolate(output)(fields);
+			output = ctrl.$interpolate(input.body)(fields);
 
+			output = output.replace(/\n/g, '<br>');
 			output = ctrl.$compile('<div>'+output+'</div>')($scope);
 
 			$element.replaceWith(output);
