@@ -11,6 +11,19 @@ html {
 
 body {
   font-size: 16px;
+  max-width: initial;
+}
+
+main, header {
+	width: 38em;
+	max-width: 100%;
+	margin: auto;
+}
+
+@media(max-width: 900px) {
+	main, header {
+		padding: 0 30px;
+	}
 }
 
 .overlay {
@@ -109,7 +122,7 @@ em {
     color: white;
     left: 0;
     font-family: sans-serif;
-    width: 300px;
+    width: 350px;
 }
 
 .inlineField input[type="number"] {

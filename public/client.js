@@ -76,15 +76,31 @@ app.directive('inlineField', function() {
 			'<span class="inlineField" ng-class="{ \'active\': vm.active }">',
 				'<span class="text" ng-class="{ hide: vm.editing }" ng-click="vm.focus($event)">{{vm.ngModel}}</span>',
 				'<div class="input" ng-class="{ hide: !vm.editing }">',
-					'<label for="{{vm.name}}">{{vm.label}}</label>',
+					'<label for="{{vm.name}}" ng-style="vm.labelStyle">{{vm.label}}</label>',
 					'<input ng-blur="vm.setEditing(false)" ng-focus="vm.setEditing(true)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{vm.sizeCalc()}}" required />',
 				'</div>',
 			'</span>'
 		].join(''),
-		controller: ['$rootScope', function($rootScope) {
+		controller: ['$element', '$rootScope', function($element, $rootScope) {
 			this.value = '';
 			this.active = false;
 			this.editing = false;
+
+			function calculateMargin() {
+				var label = $element.find('label');
+				var width = document.body.clientWidth;
+
+				leftPos = $element[0].offsetLeft;
+				elWidth = label[0].clientWidth;
+				margin = width - (leftPos + elWidth);
+				return (0 > margin ? margin : 0) + 'px';
+			}
+
+			this.labelStyle = { marginLeft: calculateMargin(), maxWidth: document.body.clientWidth + 'px' };
+
+			window.addEventListener('resize', function() {
+				this.labelStyle = { marginLeft: calculateMargin(), 'maxWidth': document.body.clientWidth + 'px' };
+			}.bind(this));
 
 			$rootScope.$on('editing', function($event, data) {
 				if (data.name === this.name && data.value === true) {
@@ -98,9 +114,9 @@ app.directive('inlineField', function() {
 				this.ngModelCtrl.$setViewValue(this.ngModel);
 			}
 			this.focus = function($event) {
-				const input = $event.target.parentElement.querySelector('input');
+				const input = $element.find('input');
 				setTimeout(function() {
-					input.focus();
+					input[0].focus();
 				}.bind(this), 50);
 			}
 			this.setEditing = function(val, $event) {
