@@ -25,25 +25,31 @@ const getForm = async () => {
 const toTitleCase = string => string.replace('_', ' ').replace(/(^.|\s.)/g, m => m.toUpperCase());
 
 const parseFields = (input) => {
-	const matches = input.match(/\{\{([a-z_|]+)\}\}/g);
+	const matches = input.match(/\{\{([^\{\}]+)\}\}/g);
 	return matches.reduce((arr, string) => {
 		const param = string.replace(/(\{|\})/g, '');
 		const paramSplit = param.split('|');
 
 		const name = paramSplit[0];
-		const type = paramSplit[1] || 'text';
+		const label = paramSplit[1] || null;
 
 		arr.push({
 			name,
-			type,
+			type: 'text',
+			label,
 			placeholder: toTitleCase(name)
 		});
 		return arr;
 	}, []);
 }
 
-removeFields = input => input.replace(/\{\{([a-z_]+)(\|[a-z]+)?\}\}/g, (m, name, type) => m.replace(type, ''));
+const removeFields = input => input.replace(/\{\{([a-z_]+)(\|[^\}\{]+)?\}\}/g, (m, name, type) => m.replace(type, ''));
 
+const interpolateFields = (input, data) => {
+	const body = removeFields(input);
+
+	return body.replace(/\{\{([^\{\}]+)\}\}/g, (m, name) => data[name]);
+}
 
 app.get("/", async (request, response) => {
 	const form = await getForm();
@@ -82,7 +88,7 @@ app.post('/submit', async (request, response) => {
 
 	const data = request.body;
 
-	if (data.email && data.body && data.name) {
+	if (data.email && data) {
 		let transporter = nodemailer.createTransport({
 			host: config.smtp.host,
 			port: config.smtp.port,
@@ -93,9 +99,12 @@ app.post('/submit', async (request, response) => {
 			}
 		});
 
-		const body = `${data.body.replace(/\n/g, "<br>")}<br>${data.name}`;
+		const from = data.name ? `"${data.name}" <${data.email}>` : data.email;
 
-		const from = `"${data.name}" <${data.email}>`;
+		const message = form.default_message.replace(/\n/g, "<br>");
+		const body = interpolateFields(message, data);
+
+		console.log(body);
 
 		console.log("Form submitted from", from);
 		try {

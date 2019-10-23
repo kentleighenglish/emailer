@@ -12,14 +12,15 @@
 	<link rel="stylesheet" href="/style.css">
 </head>
 <body ng-app="app" ng-controller="AppController as app" ng-cloak>
+	<div class="overlay" ng-show="app.editing"></div>
 	<header>
 		<h1>{{app.state.title}}</h1>
-		<div>Emails Sent: <span class="count">{{app.state.emailCount}}</span></div>
+		<!-- <div>Emails Sent: <span class="count">{{app.state.emailCount}}</span></div> -->
 	</header>
 	<main>
 		<p>{{app.state.content}}</p>
 		<hr />
-		<form>
+		<form ng-submit="app.submitForm()">
 			<div ng-switch="app.form.type">
 				<div ng-switch-when="inline" class="inlineForm">
 					<div update="app.updateForm(form)" inline-form="app.form" form="app.formData"></div>
@@ -28,6 +29,10 @@
 					<input ng-repeat="field in app.form.fields" name="{{field.name}}" ng-model="app.formData[field.name]" type="{{field.type}}" placeholder="{{field.name}}" />
 				</div>
 			</div>
+			<br />
+			<hr />
+			<label for="email">Your Email Address:</label>
+			<input name="email" type="email" ng-model="app.formData.email" required />
 			<hr>
 			<button type="submit">Send</button>
 		</form>

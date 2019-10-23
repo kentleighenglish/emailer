@@ -5,8 +5,23 @@
 	box-sizing: border-box;
 }
 
+html {
+	position: relative;
+}
+
 body {
   font-size: 16px;
+}
+
+.overlay {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	opacity: .8;
+	background-color: black;
+	pointer-events: none;
 }
 
 input {
@@ -19,6 +34,7 @@ textarea, select, input[type] {
   padding: 8px 12px;
   height: initial;
   max-height: initial;
+  margin: 0 0 10px;
 }
 
 textarea:focus, select:focus, input[type]:focus {
@@ -50,23 +66,66 @@ em {
   color: #AAAAAA;
 }
 
-.inlineForm input {
-	display: inline;
+.inlineField.active {
+	position: relative;
+	z-index: 5;
+}
+
+.inlineField.active {
+	position: relative;
+	z-index: 5;
+}
+
+.inlineField.active .text:not(.hide) {
+	opacity: .5;
+}
+
+.inlineField .hide {
+	position: absolute;
+	pointer-events: none;
+	opacity: 0;
+}
+
+.inlineField .input:not(.hide) {
+	display: inline-block;
+	position: relative;
+}
+
+.inlineField .input input {
+	display: inline-block;
 	padding: 4px;
 	font-size: 14px;
 	width: initial;
-	margin: 0 4px;
+	height: 24px;
+	margin: -2px 0 0;
+	min-width: 40px;
+	vertical-align: middle;
+	background-color: #E0E0E0;
+}
+
+.inlineField .input label {
+	bottom: 100%;
+    position: absolute;
+    color: white;
+    left: 0;
+    font-family: sans-serif;
+    width: 300px;
+}
+
+.inlineField input[type="number"] {
+	width: 0;
 	min-width: 60px;
 }
 
-inline-field .text {
+.inlineField .text {
 	display: inline-flex;
 	min-width: 40px;
 	padding: 0 6px;
 	height: 24px;
 	font-size: 16px;
 	align-items: center;
-	background: #f1f1f1;
+	background-color: #E0E0E0;
 	margin-top: -2px;
 	vertical-align: middle;
+	border-radius: 3px;
 }
