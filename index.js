@@ -11,12 +11,26 @@ app.use(express.json());
 
 const getForm = async () => {
 	if (config.formId) {
-		const form = await db.getCollection(`forms/${config.formId}`, {
+		const { banner_image, ...form } = await db.getCollection(`forms/${config.formId}`, {
 			'filter[status][eq]': 'published',
-			fields: [ 'recipient_list', 'cc_list', 'default_message', 'introduction', 'inline', 'title', 'subject', 'consent_required', 'consent_text' ].join(',')
+			fields: [
+				'recipient_list',
+				'cc_list',
+				'default_message',
+				'introduction',
+				'inline',
+				'title',
+				'subject',
+				'consent_required',
+				'consent_text',
+				'banner_image.data.full_url'
+			].join(',')
 		});
 
-		return form || {};
+		return {
+			banner_image: banner_image ? banner_image.data.full_url : null,
+			...form
+		} || {};
 	}
 
 	return {};
@@ -67,15 +81,20 @@ app.get("/", async (request, response) => {
 		}
 	};
 
+	const ssrFields = {
+		STATE: JSON.stringify(state),
+		TITLE: state.title,
+		DESCRIPTION: form.subject,
+		IMAGE: form.banner_image
+	}
+
 	try {
 		fs.readFile(__dirname + "/views/index.html", 'utf8', (err, data) => {
 			if (err) {
 				throw err;
 			}
 
-			const output = data
-				.replace('%%STATE%%', JSON.stringify(state))
-				.replace('%%TITLE%%', state.title);
+			const output = data.replace(/%%([A-Z]+)%%/g, (m, key) => (ssrFields[key] || ''))
 
 			response.send(output);
 		});
