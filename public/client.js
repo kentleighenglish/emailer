@@ -65,7 +65,7 @@ app.controller('AppController', ['$scope', 'apiService', function($scope, apiSer
 		.catch(function() {
 			this.formFailed = true;
 			this.sending = false;
-		});
+		}.bind(this));
 	}
 }]);
 
@@ -89,7 +89,7 @@ app.directive('inlineField', function() {
 				'<span class="text" ng-class="{ hide: vm.editing }" ng-click="vm.focus($event)">{{vm.ngModel}}</span>',
 				'<div class="input" ng-class="{ hide: !vm.editing }">',
 					'<label for="{{vm.name}}" ng-style="vm.labelStyle">{{vm.label}}</label>',
-					'<input ng-blur="vm.setEditing(false)" ng-focus="vm.setEditing(true)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{vm.sizeCalc()}}" required />',
+					'<input ng-trim="false" ng-blur="vm.setEditing(false)" ng-focus="vm.setEditing(true)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{vm.sizeCalc()}}" required />',
 				'</div>',
 			'</span>'
 		].join(''),

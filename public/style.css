@@ -36,6 +36,13 @@ header img+h1 {
 	padding: 0 15px;
 	color: white;
 	text-shadow: 2px 3px 10px rgba(0, 0, 0, 0.8);
+	width: calc(100% - 60px);
+}
+
+@media(max-width: 600px) {
+	header img+h1 {
+		font-size: 5vw;
+	}
 }
 
 .overlay {
@@ -47,6 +54,7 @@ header img+h1 {
 	opacity: .8;
 	background-color: black;
 	pointer-events: none;
+	z-index: 1;
 }
 
 input {
