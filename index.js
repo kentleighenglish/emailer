@@ -113,7 +113,7 @@ app.post('/submit', async (request, response) => {
 			const info = await transporter.sendMail({
 				from,
 				to: form.recipient_list,
-				cc: form.cc_list.split(','),
+				cc: [ ...form.cc_list.split(','), data.email ],
 				subject: form.subject,
 				text: body,
 				html: body
