@@ -18,7 +18,7 @@
 		<!-- <div>Emails Sent: <span class="count">{{app.state.emailCount}}</span></div> -->
 	</header>
 	<main>
-		<p>{{app.state.content}}</p>
+		<p markdown="app.state.content"></p>
 		<hr />
 		<form ng-submit="app.submitForm()">
 			<div ng-switch="app.form.type">
@@ -34,6 +34,12 @@
 			<label for="email">Your Email Address:</label>
 			<input name="email" type="email" ng-model="app.formData.email" required />
 			<hr>
+			<div ng-if="app.form.consentRequired">
+				<p markdown="app.form.consentText"></p>
+				<label for="consent_checkbox" ng-click="app.formData.consent = !app.formData.consent">
+					<input type="checkbox" name="consent_checkbox" ng-model="app.formData.consent" required />
+					<span>I agree to the above terms</span>
+			</div>
 			<button type="submit">Send</button>
 		</form>
 	</main>
@@ -43,5 +49,6 @@
 </script>
 <script src="/angular.js"></script>
 <script src="/socketio.js"></script>
+<script src="/showdown.min.js"></script>
 <script src="/client.js" defer></script>
 </html>

@@ -13,7 +13,7 @@ const getForm = async () => {
 	if (config.formId) {
 		const form = await db.getCollection(`forms/${config.formId}`, {
 			'filter[status][eq]': 'published',
-			fields: [ 'recipient_list', 'cc_list', 'default_message', 'introduction', 'inline', 'title', 'subject' ].join(',')
+			fields: [ 'recipient_list', 'cc_list', 'default_message', 'introduction', 'inline', 'title', 'subject', 'consent_required', 'consent_text' ].join(',')
 		});
 
 		return form || {};
@@ -57,8 +57,10 @@ app.get("/", async (request, response) => {
 	const state = {
 		"title": form.title,
 		"emailCount": 0,
-		"content": "We seek to demand that the NEC",
+		"content": form.introduction,
 		"form": {
+			"consentRequired": form.consent_required,
+			"consentText": form.consent_text,
 			"type": form.inline ? "inline" : "default",
 			"fields": parseFields(form.default_message),
 			"body": removeFields(form.default_message)

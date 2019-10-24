@@ -174,6 +174,24 @@ app.directive('inlineForm', function() {
 	}
 });
 
+
+app.directive('markdown', function() {
+	return {
+		restrict: 'A',
+		scope: {
+			'markdown': '<'
+		},
+		link: function($scope, $element) {
+			var converter = new showdown.Converter();
+			$scope.$watch(function() { return $scope.markdown }, function() {
+				var markdown = converter.makeHtml($scope.markdown || '');
+
+				$element.html(markdown);
+			}, true);
+		}
+	}
+});
+
 /**
  * Convert an integer to its words representation
  *
