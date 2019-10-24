@@ -26,6 +26,18 @@ main, header {
 	}
 }
 
+header {
+	position: relative;
+}
+
+header img+h1 {
+	position: absolute;
+	bottom: 0;
+	padding: 0 15px;
+	color: white;
+	text-shadow: 2px 3px 10px rgba(0, 0, 0, 0.8);
+}
+
 .overlay {
 	position: absolute;
 	height: 100%;

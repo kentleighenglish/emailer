@@ -34,6 +34,9 @@ app.controller('AppController', ['$scope', 'apiService', function($scope, apiSer
 	this.state = window.__INITIAL_STATE__;
 
 	this.form = Object(this.state.form);
+	this.sending = false;
+	this.formSent = false;
+	this.formFailed = false;
 
 	this.formData = {};
 
@@ -53,7 +56,16 @@ app.controller('AppController', ['$scope', 'apiService', function($scope, apiSer
 	}
 
 	this.submitForm = function() {
-		apiService.submitForm(this.formData);
+		this.sending = true;
+		apiService.submitForm(this.formData)
+		.then(function() {
+			this.formSent = true;
+			this.sending = false;
+		}.bind(this))
+		.catch(function() {
+			this.formFailed = true;
+			this.sending = false;
+		});
 	}
 }]);
 

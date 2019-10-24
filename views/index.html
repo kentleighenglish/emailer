@@ -20,13 +20,22 @@
 <body ng-app="app" ng-controller="AppController as app" ng-cloak>
 	<div class="overlay" ng-show="app.editing"></div>
 	<header>
+		<img ng-if="app.state.bannerImage" ng-src="{{app.state.bannerImage}}" />
 		<h1>{{app.state.title}}</h1>
 		<!-- <div>Emails Sent: <span class="count">{{app.state.emailCount}}</span></div> -->
 	</header>
 	<main>
 		<p markdown="app.state.content"></p>
 		<hr />
-		<form ng-submit="app.submitForm()">
+		<div ng-show="app.formSent">
+			<p>Thank you.</p>
+			<em>Your message has been successfully sent</em>
+		</div>
+		<div ng-show="app.formFailed">
+			<p>There was an unexpected issue.</p>
+			<em>We were unable to send your message</em>
+		</div>
+		<form ng-submit="app.submitForm()" ng-hide="app.formSent || app.formFailed">
 			<div ng-switch="app.form.type">
 				<div ng-switch-when="inline" class="inlineForm">
 					<div update="app.updateForm(form)" inline-form="app.form" form="app.formData"></div>
@@ -46,7 +55,7 @@
 					<input type="checkbox" name="consent_checkbox" ng-model="app.formData.consent" required />
 					<span>I agree to the above terms</span>
 			</div>
-			<button type="submit">Send</button>
+			<button type="submit" ng-disabled="app.sending">Send</button>
 			<small>The email you provide will be CCd in the resulting email</small>
 		</form>
 	</main>

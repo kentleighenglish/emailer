@@ -72,6 +72,7 @@ app.get("/", async (request, response) => {
 		"title": form.title,
 		"emailCount": 0,
 		"content": form.introduction,
+		"bannerImage": form.banner_image,
 		"form": {
 			"consentRequired": form.consent_required,
 			"consentText": form.consent_text,
