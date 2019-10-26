@@ -120,22 +120,16 @@ em {
 	z-index: 5;
 }
 
-.inlineField.active .text:not(.hide) {
+.inlineField.active .inlineField__text:not(.hide) {
 	opacity: .5;
 }
 
-.inlineField .hide {
-	position: absolute;
-	pointer-events: none;
-	opacity: 0;
-}
-
-.inlineField .input:not(.hide) {
-	display: inline-block;
+.inlineField .inlineField__input {
+	display: inherit;
 	position: relative;
 }
 
-.inlineField .input input {
+.inlineField .inlineField__input input {
 	display: inline-block;
 	padding: 4px;
 	font-size: 14px;
@@ -147,7 +141,7 @@ em {
 	background-color: #E0E0E0;
 }
 
-.inlineField .input label {
+.inlineField .inlineField__input label {
 	bottom: 100%;
     position: absolute;
     color: white;
@@ -161,7 +155,7 @@ em {
 	min-width: 60px;
 }
 
-.inlineField .text {
+.inlineField .inlineField__text {
 	display: inline-flex;
 	min-width: 40px;
 	padding: 0 6px;
@@ -172,4 +166,10 @@ em {
 	margin-top: -2px;
 	vertical-align: middle;
 	border-radius: 3px;
+}
+
+.inlineField .hide {
+	position: absolute;
+	pointer-events: none;
+	opacity: 0;
 }
