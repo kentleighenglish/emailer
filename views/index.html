@@ -29,12 +29,12 @@
 		<p markdown="app.state.content"></p>
 		<hr />
 		<div ng-show="app.formSent">
-			<p>Thank you.</p>
-			<em>Your message has been successfully sent</em>
+			<h4>Thank you.</h4>
+			<b>Your message has been successfully sent</b>
 		</div>
 		<div ng-show="app.formFailed">
-			<p>There was an unexpected issue.</p>
-			<em>We were unable to send your message</em>
+			<h4>There was an unexpected issue.</h4>
+			<b>We were unable to send your message</b>
 		</div>
 		<form ng-submit="app.submitForm()" ng-hide="app.formSent || app.formFailed">
 			<div ng-switch="app.form.type">

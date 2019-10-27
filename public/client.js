@@ -61,10 +61,12 @@ app.controller('AppController', ['$scope', 'apiService', function($scope, apiSer
 		.then(function() {
 			this.formSent = true;
 			this.sending = false;
+			$scope.$apply();
 		}.bind(this))
 		.catch(function() {
 			this.formFailed = true;
 			this.sending = false;
+			$scope.$apply();
 		}.bind(this));
 	}
 }]);
