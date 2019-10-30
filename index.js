@@ -1,4 +1,5 @@
 const express = require("express");
+const { check } = require('express-validator');
 const nodemailer = require('nodemailer');
 const app = express();
 const config = require('config');
@@ -25,6 +26,8 @@ const getForm = async () => {
 				'subject',
 				'consent_required',
 				'consent_text',
+				'success_text',
+				'failed_text',
 				'banner_image.data.full_url'
 			].join(',')
 		});
@@ -78,6 +81,8 @@ app.get("/", async (request, response) => {
 		"form": {
 			"consentRequired": form.consent_required,
 			"consentText": form.consent_text,
+			"thankYouText": form.success_text,
+			"failedText": form.failed_text,
 			"type": form.inline ? "inline" : "default",
 			"fields": parseFields(form.default_message),
 			"body": removeFields(form.default_message)
