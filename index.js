@@ -3,6 +3,8 @@ const nodemailer = require('nodemailer');
 const app = express();
 const config = require('config');
 const fs = require('fs');
+const path = require('path');
+const store = require('data-store')({ path: path.resolve(__dirname, './store/store.db')});
 
 const db = require('./directus');
 
@@ -131,7 +133,8 @@ app.post('/submit', async (request, response) => {
 		console.log("Form submitted from", from);
 		try {
 			const info = await transporter.sendMail({
-				from,
+				replyTo: from,
+				from: config.from,
 				to: form.recipient_list,
 				cc: [ ...form.cc_list.split(','), data.email ],
 				subject: form.subject,

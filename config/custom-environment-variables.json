@@ -5,7 +5,8 @@
 		"password": "SMTP_PASSWORD",
 		"host": "SMTP_HOST",
 		"port": "SMTP_PORT",
-		"secure": "SMTP_SECURE"
+		"secure": "SMTP_SECURE",
+    "from": "FROM"
 	},
   "directus": {
     "host": "DIRECTUS_HOST",

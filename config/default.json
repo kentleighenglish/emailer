@@ -1,7 +1,8 @@
 {
 	"smtp": {
 		"username": null,
-		"password": null
+		"password": null,
+    "from": "email@example.com"
 	},
 	"formId": null
 }
