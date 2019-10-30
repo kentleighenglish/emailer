@@ -28,13 +28,13 @@
 	<main>
 		<p markdown="app.state.content"></p>
 		<hr />
-		<div >
+		<div ng-if="app.formSent">
 			<span markdown="app.form.thankYouText"></span>
 		</div>
-		<div >
+		<div ng-if="app.formFailed">
 			<span markdown="app.form.failedText"></span>
 		</div>
-		<form ng-submit="app.submitForm()" ng-hide="app.formSent || app.formFailed">
+		<form ng-submit="app.submitForm()" ng-if="!app.formSent && !app.formFailed">
 			<div ng-switch="app.form.type">
 				<div ng-switch-when="inline" class="inlineForm">
 					<div update="app.updateForm(form)" inline-form="app.form" form="app.formData"></div>

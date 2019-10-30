@@ -60,7 +60,7 @@ app.controller('AppController', ['$scope', 'apiService', function($scope, apiSer
 		this.sending = true;
 		apiService.submitForm({
 			formData: this.formData,
-			email
+			email: this.email
 		})
 		.then(function() {
 			this.formSent = true;

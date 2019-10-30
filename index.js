@@ -140,7 +140,7 @@ app.post('/submit', [
 		try {
 			const info = await transporter.sendMail({
 				replyTo: from,
-				from: config.from,
+				from: config.smtp.from,
 				to: form.recipient_list,
 				cc: [ ...form.cc_list.split(','), data.email ],
 				subject: form.subject,
