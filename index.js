@@ -112,7 +112,10 @@ app.get("/", async (request, response) => {
 	}
 });
 
-app.post('/submit', async (request, response) => {
+app.post('/submit', [
+	check('email').isEmail(),
+	check('formData.*').trim().escape()
+], async (request, response) => {
 	const form = await getForm();
 
 	const data = request.body;
@@ -128,12 +131,10 @@ app.post('/submit', async (request, response) => {
 			}
 		});
 
-		const from = data.name ? `"${data.name}" <${data.email}>` : data.email;
+		const from = data.formData.name ? `"${data.formData.name}" <${data.email}>` : data.email;
 
 		const message = form.default_message.replace(/\n/g, "<br>");
-		const body = interpolateFields(message, data);
-
-		console.log(body);
+		const body = interpolateFields(message, data.formData);
 
 		console.log("Form submitted from", from);
 		try {
