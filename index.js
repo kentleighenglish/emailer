@@ -166,7 +166,7 @@ app.post('/submit', [
 			console.log(info);
 			store.union('records', {
 				email: data.email,
-				fields: data.formData,
+				// fields: data.formData,
 				timestamp: new Date().toISOString()
 			})
 
