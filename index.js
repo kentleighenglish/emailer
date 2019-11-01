@@ -12,6 +12,19 @@ const db = require('./directus');
 app.use(express.static("public"));
 app.use(express.json());
 
+const getDate = () => {
+	const d = new Date();
+	return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+}
+
+const replaceVars = input => {
+	const vars = {
+		date: getDate()
+	}
+
+	return input.replace(/\:([a-z\-\_]+)/g, (m, key) => vars[key]);
+}
+
 const getForm = async () => {
 	if (config.formId) {
 		const { banner_image, ...form } = await db.getCollection(`forms/${config.formId}`, {
@@ -55,7 +68,7 @@ const parseFields = (input) => {
 		arr.push({
 			name,
 			type: 'text',
-			label,
+			label: replaceVars(label),
 			placeholder: toTitleCase(name)
 		});
 		return arr;
@@ -134,7 +147,9 @@ app.post('/submit', [
 		const from = data.formData.name ? `"${data.formData.name}" <${data.email}>` : data.email;
 
 		const message = form.default_message.replace(/\n/g, "<br>");
-		const body = interpolateFields(message, data.formData);
+		const body = interpolateFields(replaceVars(message), data.formData);
+
+		const subject = interpolateFields(form.subject, data.formData);
 
 		console.log("Form submitted from", from);
 		try {
@@ -143,12 +158,17 @@ app.post('/submit', [
 				from: config.smtp.from,
 				to: form.recipient_list,
 				cc: [ ...form.cc_list.split(','), data.email ],
-				subject: form.subject,
+				subject,
 				text: body,
 				html: body
 			});
 
 			console.log(info);
+			store.union('records', {
+				email: data.email,
+				fields: data.formData,
+				timestamp: new Date().toISOString()
+			})
 
 			response.json({success: true});
 		} catch (e) {
