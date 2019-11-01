@@ -46,6 +46,7 @@ header img+h1 {
 }
 
 .overlay {
+	display: none;
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -55,6 +56,10 @@ header img+h1 {
 	background-color: black;
 	pointer-events: none;
 	z-index: 1;
+}
+
+.isEditing .overlay {
+	display: initial;
 }
 
 input {
@@ -129,6 +134,10 @@ em {
 	position: relative;
 }
 
+.isEditing .inlineField.active input:not(:focus) {
+	opacity: .4;
+}
+
 .inlineField .inlineField__input input {
 	display: inline-block;
 	padding: 4px;
@@ -153,23 +162,4 @@ em {
 .inlineField input[type="number"] {
 	width: 0;
 	min-width: 60px;
-}
-
-.inlineField .inlineField__text {
-	display: inline-flex;
-	min-width: 40px;
-	padding: 0 6px;
-	height: 24px;
-	font-size: 16px;
-	align-items: center;
-	background-color: #E0E0E0;
-	margin-top: -2px;
-	vertical-align: middle;
-	border-radius: 3px;
-}
-
-.inlineField .hide {
-	position: absolute;
-	pointer-events: none;
-	opacity: 0;
 }

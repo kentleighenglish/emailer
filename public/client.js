@@ -92,10 +92,9 @@ app.directive('inlineField', function() {
 		controllerAs: 'vm',
 		template: [
 			'<span class="inlineField" ng-class="{ \'active\': vm.active }">',
-				'<span class="inlineField__text" ng-show="!vm.editing" ng-click="vm.focus($event)">{{vm.ngModel}}</span>',
-				'<div class="inlineField__input" ng-show="vm.editing">',
-					'<label for="{{vm.name}}" ng-style="vm.labelStyle">{{vm.label}}</label>',
-					'<input ng-trim="false" ng-blur="vm.setEditing(false)" ng-focus="vm.setEditing(true)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{vm.sizeCalc()}}" required />',
+				'<div class="inlineField__input">',
+					'<label for="{{vm.name}}" ng-style="vm.labelStyle" ng-show="vm.editing">{{vm.label}}</label>',
+					'<input autocomplete="off" ng-trim="false" ng-blur="vm.setEditing(false)" ng-focus="vm.setEditing(true)" ng-change="vm.update()" ng-model="vm.ngModel" name="{{vm.name}}" type="{{vm.type}}" ng-attr-size="{{vm.sizeCalc()}}" required />',
 				'</div>',
 			'</span>'
 		].join(''),
@@ -129,13 +128,6 @@ app.directive('inlineField', function() {
 
 			this.update = function() {
 				this.ngModelCtrl.$setViewValue(this.ngModel);
-			}
-			this.focus = function($event) {
-				this.setEditing(true);
-				const input = $element.find('input');
-				setTimeout(function() {
-					input[0].focus();
-				}.bind(this), 50);
 			}
 			this.setEditing = function(val, $event) {
 				$rootScope.$broadcast('editing', { name: this.name, value: val });
