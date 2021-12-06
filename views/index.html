@@ -18,8 +18,8 @@
 	<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
 	<link rel="stylesheet" href="/style.css">
 </head>
-<body ng-app="app" ng-controller="AppController as app" ng-cloak>
-	<div class="overlay" ng-show="app.editing"></div>
+<body ng-app="app" ng-controller="AppController as app" ng-cloak ng-class="{ isEditing: app.editing }">
+	<div class="overlay"></div>
 	<header>
 		<img ng-if="app.state.bannerImage" ng-src="{{app.state.bannerImage}}" />
 		<h1>{{app.state.title}}</h1>
