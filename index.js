@@ -84,7 +84,20 @@ const interpolateFields = (input, data) => {
 }
 
 app.get("/", async (request, response) => {
-	const form = await getForm();
+	// const form = await getForm();
+	const form = {
+		title: "test",
+		introduction: "Introduction",
+		banner_image: null,
+		consent_required: true,
+		consent_text: "I consent",
+		failed_text: "FAIL",
+		inline: true,
+		default_message: `This is the form text {{hello|value|number}} second {{hello2|lol}}`
+	}
+	console.log(parseFields(form.default_message));
+
+	console.log("body", removeFields(form.default_message));
 
 	const state = {
 		"title": form.title,
